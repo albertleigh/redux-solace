@@ -1,0 +1,39 @@
+{
+  "name": "redux-solace",
+  "version": "0.20.10",
+  "description": "solace redux middleware wrapper",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@albertli.ddns.net:rbccm/redux-solace.git"
+  },
+  "keywords": [
+    "redux",
+    "solace",
+    "albert"
+  ],
+  "author": "Wentao Li <liwentao90@yahoo.com>",
+  "license": "MIT",
+  "dependencies": {
+    "redux": "^4.0.1",
+    "redux-actions": "^2.6.4",
+    "solclientjs": "^10.2.0",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.0",
+    "@types/node": "^10.12.21",
+    "@types/redux-actions": "^2.3.1",
+    "fs-extra": "^7.0.1",
+    "jest": "^24.1.0",
+    "jest-environment-jsdom": "^24.0.0",
+    "jest-environment-jsdom-global": "^1.1.0",
+    "redux-mock-store": "^1.5.3",
+    "rimraf": "^2.6.3",
+    "ts-jest": "^23.10.5",
+    "typescript": "^3.3.1"
+  }
+}

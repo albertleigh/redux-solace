@@ -20,7 +20,7 @@
   "dependencies": {
     "redux": "^4.0.1",
     "redux-actions": "^2.6.4",
-    "solclientjs": "^10.2.0",
+    "solclientjs": "^10.2.1",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
@@ -35,5 +35,46 @@
     "rimraf": "^2.6.3",
     "ts-jest": "^23.10.5",
     "typescript": "^3.3.1"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx,js,jsx,mjs}",
+      "!src/event/index.ts",
+      "!src/system/index.ts",
+      "!src/index.ts"
+    ],
+    "setupFiles": [],
+    "testMatch": [
+      "**/__tests__/**/*.{ts,tsx,js,jsx,mjs}",
+      "**/?(*.)(spec|test).{ts,tsx,js,jsx,mjs}"
+    ],
+    "snapshotSerializers": [],
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "globals": {},
+    "testEnvironment": "jest-environment-jsdom-global",
+    "testURL": "http://localhost",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs)$",
+      "^.+\\.module\\.(css|sass|scss)$"
+    ],
+    "moduleNameMapper": {},
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "web.js",
+      "web.ts",
+      "js",
+      "json",
+      "web.tsx",
+      "web.jsx",
+      "jsx",
+      "node",
+      "mjs"
+    ]
   }
 }

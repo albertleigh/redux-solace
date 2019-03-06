@@ -3,13 +3,12 @@ import uuid from 'uuid/v4';
 let totalSessionCreatedSeq = 0;
 
 export interface ISessionContextConfig {
-    [key:number]:any,
-    [key:string]:any,
+    usePerMsgAck?:boolean,
 }
 
 export interface ISessionContextEventHooks {
-    [key:number]:any,
-    [key:string]:any,
+    [key:number]:Array<(event:any)=>void>,
+    [key:string]:Array<(event:any)=>void>,
 }
 
 export interface ISessionContextConsumerDict {
@@ -189,8 +188,148 @@ export default class SolaceContext{
 
     // session management session
 
+    private _generateOneEventHookOfOnesessionHandler = (sessionId:string,eventCode:(string|number)):((sessionEvent:any)=>void) =>{
+        return(sessionEvent)=>{
+            if (this.sessionContextDict[sessionId].eventHooks[eventCode]){
+                this.sessionContextDict[sessionId].eventHooks[eventCode].forEach(
+                    (oneFun)=>{
+                        oneFun(sessionEvent);
+                    }
+                )
+            }
+        }
+    }
 
+    createAndConnectSession = (hosturl:string,username:string,pass:string,vpn:string,sessionCache:string,eventHooks:ISessionContextEventHooks={},config:ISessionContextConfig={}):SessionContext=>{
+        let oneSession;
+        let sessionProperty;
 
+        if (!eventHooks[this.solace.SessionEventCode.DISCONNECTED]){
+            eventHooks[this.solace.SessionEventCode.DISCONNECTED]=[];
+        }
+
+        if (
+            hosturl.lastIndexOf("ws://")!==0 &&
+            hosturl.lastIndexOf("wss://")!==0 &&
+            hosturl.lastIndexOf("http://")!==0 &&
+            hosturl.lastIndexOf("https://")!==0
+        ){
+            console.error('SolaceContext::createAndConnectSession Invalid protocol - please user one of ws://, wss://, http:// or https:// in host url', hosturl);
+            return null;
+        }
+
+        if (!hosturl || !username || !vpn){
+            console.error('SolaceContext::createAndConnectSession Cannot connect: please specify all the Solace msg router properties', hosturl, username, vpn);
+            return null;
+        }
+
+        console.log('[redux-solace] connecting to solace msg router using url: ', hosturl);
+        console.log('[redux-solace] client name', username);
+        console.log('[redux-solace] solace msg router vpn name', vpn);
+        console.log('[redux-solace] creating session', vpn);
+
+        // solace session properties
+        sessionProperty={
+            url: hosturl,
+            vpnName: vpn,
+            userName: username,
+            password: pass,
+        };
+
+        if (config && config.usePerMsgAck){
+            sessionProperty.publisherProperties={
+                acknowledgeMode: this.solace.MessagePublisherAcknowledgeMode.PER_MESSAGE,
+            }
+        }
+
+        oneSession = this.solace.SolclientFactory.createSession(sessionProperty);
+
+        // add default disconnected hook
+        eventHooks[this.solace.DISCONNECTED].push((sessionEvent)=>{
+            console.log('[redux-solace] one session disconnected');
+            if (oneSession){
+                oneSession.dispose();
+                oneSession = null;
+            }
+        });
+
+        let theSessionId = this._addSession(oneSession, sessionCache, eventHooks, config);
+        this.solaceSessionEventCodes.forEach((eventCode)=>{
+            oneSession.on(eventCode, this._generateOneEventHookOfOnesessionHandler(theSessionId, eventCode));
+        })
+
+        console.log('[redux-solace] Establishing one session connection');
+
+        oneSession.connect()
+        return this.sessionContextDict[theSessionId];
+    };
+
+    addOneToEventHookOfOneSession = (sessionId:string, eventCode:(string|number), cb:(event:any)=>void):void=>{
+        if (!this.sessionContextDict[sessionId].eventHooks[eventCode]){
+            this.sessionContextDict[sessionId].eventHooks[eventCode] = [];
+        }
+
+        if(!this.sessionContextDict[sessionId].eventHooks[eventCode].some((oneCb)=>(oneCb === cb))){
+            this.sessionContextDict[sessionId].eventHooks[eventCode].push(cb);
+        }
+    };
+
+    removeFromEventHookOfOneSession = (sessionId:string, eventCode:(string|number), cb:(event:any)=>void):void=>{
+        if (this.sessionContextDict[sessionId].eventHooks[eventCode]){
+            this.sessionContextDict[sessionId].eventHooks[eventCode]=
+                this.sessionContextDict[sessionId].eventHooks[eventCode].filter( oneCb => (oneCb !== cb));
+        }
+    };
+
+    disconnectAndRemoveOneSession = (sessionId:string):number=>{
+        if (!!this.sessionContextDict[sessionId]){
+            console.log('[redux-solace] Disconnecting from solace msg router of sessionId:', sessionId);
+            this.sessionContextDict[sessionId].session.disconnect();
+            return this.removeSession(sessionId);
+        }else{
+            console.log('[redux-solace] Failed to disconnecting from solace msg router of non-existing sessionId:', sessionId);
+            return 0;
+        }
+    };
+
+    disconnectAllSessions = ():number => {
+        let sum = 0;
+        Object.keys(this.sessionContextDict).forEach( (oneSessionId:string)=>{
+            sum+=this.disconnectAndRemoveOneSession(oneSessionId);
+        });
+        return sum;
+    }
+
+    sendCacheRequestOfOneSession = (
+        sessionId, topicName,
+        requestId, cb, userObj
+    )=>{
+        if (this.sessionContextDict[sessionId] && this.sessionContextDict[sessionId].session){
+            // assert we have one session obj
+
+            // check and create cache session if needed
+            if (!this.sessionContextDict[sessionId].cacheSession){
+                this.sessionContextDict[sessionId].cacheSession = this.sessionContextDict[sessionId].session.createCacheSession(
+                    new this.solace.CacheSessionProperties(
+                        this.sessionContextDict[sessionId].sessionCacheName
+                    )
+                )
+            }
+
+            // do request the cache
+            this.sessionContextDict[sessionId].cacheSession.sendCacheRequest(
+                requestId,
+                this.solace.SolclientFactory.createTopicDestination(topicName),
+                false,
+                this.solace.CacheLiveDataAction.FLOW_THRU,
+                new this.solace.CacheCBInfo(
+                    cb,userObj
+                )
+            );
+        }else{
+            throw `[redux-solace]Cannot find session ${sessionId}`;
+        }
+    }
 
 }
 

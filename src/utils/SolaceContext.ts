@@ -406,6 +406,78 @@ export default class SolaceContext{
         }else{
             console.log(`[redux-solace] cannot unsubscribe not-existing ${sessionId}`);
         }
+    };
+
+    // queue and confirmed delivery
+
+    sendOneTxtMsgToQueueOfOneSession = (
+        sessionId:string, queueName:string, msgTxt:string, userDataStr:string, userPropertyMap:any, correlationKey:any=null
+    ) =>{
+        if (!!this.sessionContextDict[sessionId]){
+            const context = this.sessionContextDict[sessionId];
+            const message = this.solace.SolclientFactory.createMessage();
+            const _userPropertyMap = new this.solace.SDTMapContainer();
+
+            Object.keys(userPropertyMap).forEach((oneKey)=>{
+                const oneField = this.solace.SDTField.create(this.solace.SDTFieldType.STRING,''+userPropertyMap[oneKey]);
+                _userPropertyMap.addField(oneKey,oneField);
+            });
+
+            message.setUserData(userDataStr);
+            message.setUserPropertyMap(_userPropertyMap);
+            message.setDestination(this.solace.SolclientFactory.createDurableQueueDestination(queueName));
+            message.setBinaryAttachment(msgTxt);
+            message.setDeliveryMode(this.solace.MessageDeliveryModeType.PERSISTENT);
+            if(correlationKey){
+                correlationKey.sessionId = sessionId;
+                message.setCorrelationKey(correlationKey);
+            }
+            console.log(`[redux-solace] sending msg ${msgTxt} to queue ${queueName}`);
+            context.session.send(message);
+            console.log(`[redux-solace] msg published`);
+        }else{
+            console.log(`[redux-solace] cannot send to the queue b/c not-existing session ${sessionId}`);
+        }
+    };
+
+    consumeFromQueueOfOneSession = (
+        sessionId:string, queueName:string, onMsgCb:Function,
+        autoAck:boolean=true, otherCbDict:{[key:number]:Function,[key:string]:Function} = {}
+    ) =>{
+        if(!!this.sessionContextDict[sessionId]){
+            const context = this.sessionContextDict[sessionId];
+            if (!!context.consumerDict[queueName]){
+                console.log(`[redux-solace] already listen to ${queueName} and ready to consume the message`);
+            }else{
+                const msgConsumer = context.session.createMessageConsumer({
+                    queueDescriptor:{
+                        name:queueName,
+                        type: this.solace.QueueType.QUEUE,
+                    },
+                    acknowledgeMode: this.solace.MessageConsumerAcknowledgeMode.CLIENT, // enabling client ack
+                });
+                msgConsumer.connect();
+                msgConsumer.on(this.solace.MessageConsumerEventName.MESSAGE,(message)=>{
+                    if (autoAck){
+                        message.acknowledge();
+                    }
+                    onMsgCb(message);
+                });
+
+                this.messageConsumerEventCodes.forEach(evtKey => {
+                    if (otherCbDict[evtKey]){
+                        msgConsumer.on(evtKey,(...args)=>{
+                            otherCbDict[evtKey](...args)
+                        })
+                    }
+                });
+
+                context.consumerDict[queueName] = msgConsumer;
+            }
+        }else{
+            console.log(`[redux-solace] cannot consume msg via not-existing session ${sessionId}`);
+        }
+
     }
 
 

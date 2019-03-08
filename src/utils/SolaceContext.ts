@@ -478,41 +478,71 @@ export default class SolaceContext{
             console.log(`[redux-solace] cannot consume msg via not-existing session ${sessionId}`);
         }
 
-    }
+    };
 
+    // request & reply
+
+    sendTxtMsgReqOfOneSession = (
+        sessionId:string, topicName:string, msgTxt:string, userDataStr:string, userPropertyMap:any,
+        replyReceivedCb:Function,replyFailedCb:Function,
+        userObj:any = {}, deliverToOne:Boolean = true, timeout:number = 5000
+    ) =>{
+        if (!!this.sessionContextDict[sessionId]){
+            const context = this.sessionContextDict[sessionId];
+            const message = this.solace.SolclientFactory.createMessage();
+            const _userPropertyMap = new this.solace.SDTMapContainer();
+
+            Object.keys(userPropertyMap).forEach((oneKey)=>{
+                const oneField = this.solace.SDTField.create(this.solace.SDTFieldType.STRING,''+userPropertyMap[oneKey]);
+                _userPropertyMap.addField(oneKey,oneField);
+            });
+
+            message.setUserData(userDataStr);
+            message.setUserPropertyMap(_userPropertyMap);
+            message.setDestination(this.solace.SolclientFactory.createDurableQueueDestination(topicName));
+            message.setBinaryAttachment(msgTxt);
+            message.setDeliveryMode(this.solace.MessageDeliveryModeType.DIRECT);
+            message.setDeliverToOne(deliverToOne);
+
+            context.session.sendRequest(
+                message, timeout, replyReceivedCb, replyFailedCb, userObj
+            );
+            console.log(`[redux-solace] req msg send`, msgTxt);
+
+        }else{
+            console.log(`[redux-solace] cannot send txt req msg as session ${sessionId} not found`);
+        }
+
+    };
+
+    replyOneMsgViaTxtOfOneSession= (
+        receivedMsg, sessionId, msgTxt, userDataStr, userPropertyMap
+    ) =>{
+        if (!!this.sessionContextDict[sessionId]){
+            const context = this.sessionContextDict[sessionId];
+            const message = this.solace.SolclientFactory.createMessage();
+            const _userPropertyMap = new this.solace.SDTMapContainer();
+            // const correlationKey = receivedMsg.getCorrelationKey();
+
+            Object.keys(userPropertyMap).forEach((oneKey)=>{
+                const oneField = this.solace.SDTField.create(this.solace.SDTFieldType.STRING,''+userPropertyMap[oneKey]);
+                _userPropertyMap.addField(oneKey,oneField);
+            });
+
+            message.setUserData(userDataStr);
+            message.setUserPropertyMap(_userPropertyMap);
+            message.setBinaryAttachment(msgTxt);
+
+            context.session.sendReply(
+                receivedMsg, message
+            );
+
+            console.log(`[redux-solace] reply msg send`, msgTxt);
+
+        }else{
+            console.log(`[redux-solace] cannot reply the txt msg as session ${sessionId} not found`);
+        }
+
+    };
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -298,12 +298,12 @@ export default class SolaceContext{
             sum+=this.disconnectAndRemoveOneSession(oneSessionId);
         });
         return sum;
-    }
+    };
 
     sendCacheRequestOfOneSession = (
         sessionId, topicName,
         requestId, cb, userObj
-    )=>{
+    ):void=>{
         if (this.sessionContextDict[sessionId] && this.sessionContextDict[sessionId].session){
             // assert we have one session obj
 
@@ -329,7 +329,85 @@ export default class SolaceContext{
         }else{
             throw `[redux-solace]Cannot find session ${sessionId}`;
         }
+    };
+
+    // publish & subscribe
+
+    publishOneTxtMsgOfOneSession = (
+        sessionId:string, topicName:string, msgText:string, userDataStr:string,userPropertyMap:any
+    )=>{
+        if(!!this.sessionContextDict[sessionId]){
+            const context:SessionContext = this.sessionContextDict[sessionId];
+            const message = this.solace.SolclientFactory.createMessage();
+            const _userPropertyMap = new this.solace.SDTMapContainer();
+
+            Object.keys(userPropertyMap).forEach((oneKey)=>{
+                const oneField = this.solace.SDTField.create(this.solace.SDTFieldType.STRING,''+userPropertyMap[oneKey]);
+                _userPropertyMap.addField(oneKey,oneField);
+            });
+
+            message.setUserData(userDataStr);
+            message.setUserPropertyMap(_userPropertyMap);
+            message.setDestination(this.solace.SolclientFactory.createTopicDestination(topicName));
+            message.setBinaryAttachment(msgText);
+            message.setDeliveryMode(this.solace.MessageDeliveryModeType.DIRECT);
+
+            console.log(`[redux-solace] publishing msg ${msgText} to topic ${topicName}`);
+
+            context.session.send(message);
+
+            console.log(`[redux-solace] msg published`);
+        }else{
+            console.log(`[redux-solace] cannot publish not-existing ${sessionId}`);
+        }
+
+    };
+
+    subscribeOneTopicOfOneSession = (
+        sessionId:string, topicName:string, timeout:number=10000
+    )=>{
+        if(!!this.sessionContextDict[sessionId]){
+            const context = this.sessionContextDict[sessionId];
+            if (context.subscribedTopics.some(one=>(one === topicName))){
+                console.log(`[redux-solace] already subscribed to ${topicName} and ready to consume msg`);
+            }else{
+                console.log(`[redux-solace] subscribing to ${topicName}`);
+                context.session.subscribe(
+                    this.solace.SolclientFactory.createTopicDestination(topicName),
+                    true, // generate confirmation when subscription is added successfully
+                    topicName,
+                    timeout
+                );
+                context.subscribedTopics.push(topicName);
+            }
+        }else{
+            console.log(`[redux-solace] cannot subscribe not-existing ${sessionId}`);
+        }
+    };
+
+    unsubscribeOneTopicOfOneSession = (
+        sessionId:string, topicName:string, timeout:number=10000
+    )=>{
+        if(!!this.sessionContextDict[sessionId]){
+            const context = this.sessionContextDict[sessionId];
+            if (context.subscribedTopics.some(one=>(one === topicName))){
+                console.log(`[redux-solace] unsubscribe ${topicName}`);
+                context.session.unsubscribe(
+                    this.solace.SolclientFactory.createTopicDestination(topicName),
+                    true, // generate confirmation when unsubscription is done
+                    topicName,
+                    timeout
+                );
+                context.subscribedTopics = context.subscribedTopics.filter( one => (one!==topicName));
+            }else{
+                console.log(`[redux-solace] cannot unsubscribe ${topicName} b/c not subscribed to it yet`);
+            }
+
+        }else{
+            console.log(`[redux-solace] cannot unsubscribe not-existing ${sessionId}`);
+        }
     }
+
 
 }
 

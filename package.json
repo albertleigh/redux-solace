@@ -4,7 +4,13 @@
   "description": "solace redux middleware wrapper",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prebuild": "rimraf build",
+    "build:es2015": "tsc",
+    "build:es2015-prod": "tsc -p tsconfig.prod.json",
+    "build:copy-files": "node ./scripts/copy-files.js",
+    "build": "yarn prebuild && yarn build:es2015 && yarn build:copy-files",
+    "build-prod": "yarn prebuild && yarn build:es2015-prod && yarn build:copy-files",
+    "test": "node scripts/test/js"
   },
   "repository": {
     "type": "git",

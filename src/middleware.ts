@@ -1,6 +1,7 @@
 import {Store, Action, Middleware, MiddlewareAPI } from 'redux';
 import { ActionHandlerParams } from './GlobalTypes';
 
+// session
 import {
     CREATE_AND_CONNECT_SESSION,
     DISCONNECT_AND_REMOVE_ONE_SESSION,
@@ -14,6 +15,18 @@ import {
     sendCacheRequestOfOneSessionHandler,
 } from './session/handlers';
 
+// publish & subscribe
+import {
+    PUBLISH_ONE_TXT_MSG_TO_ONE_SESSION,
+    SUBSCRIBE_ONE_TOPIC_OF_ONE_SESSION,
+    UNSUBSCRIBE_ONE_TOPIC_OF_ONE_SESSION,
+} from './publishSubscribe/actions.constant';
+import {
+    publishOneTxtMsgToOneSessionHanlder,
+    subscribeOneTopicOfOneSessionHanlder,
+    unsubscribeOneTopicOfOneSessionHanlder,
+} from './publishSubscribe/handlers'
+
 import init from './init';
 
 declare const window;
@@ -26,6 +39,9 @@ const actionHandlers = {
     [CLOSE_AND_REMOVE_ALL_SESSIONS]:closeAndRemoveAllSessionsHandler,
     [SEND_CACHE_REQUEST_OF_ONE_SESSION]:sendCacheRequestOfOneSessionHandler,
     // publish & subscribe
+    [PUBLISH_ONE_TXT_MSG_TO_ONE_SESSION]:publishOneTxtMsgToOneSessionHanlder,
+    [SUBSCRIBE_ONE_TOPIC_OF_ONE_SESSION]:subscribeOneTopicOfOneSessionHanlder,
+    [UNSUBSCRIBE_ONE_TOPIC_OF_ONE_SESSION]:unsubscribeOneTopicOfOneSessionHanlder,
 };
 
 export default ():Middleware => {

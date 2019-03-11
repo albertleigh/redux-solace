@@ -32,6 +32,7 @@ export async function createAndConnectSession(action:Action<types.ICreateAndConn
             name:CREATE_SESSION_ERR_MSG,
             error:e,
         }));
+        throw  e;
     }finally {
         dispatchAction(handlerActions.solaceContextChanged(initState.solaceContext.getContextPayload()))
     }
@@ -81,6 +82,7 @@ export async function disconnectAndRemoveOneSession(action:Action<types.IDisconn
             name:CLOSE_SESSION_ERR_MSG,
             error:e,
         }));
+        throw  e;
     }finally {
         dispatchAction(handlerActions.solaceContextChanged(initState.solaceContext.getContextPayload()))
     }
@@ -102,6 +104,7 @@ export async function closeAndRemoveAllSessions(action:Action<types.ICloseAndRem
             name:CLOSE_ALL_SESSION_ERR_MSG,
             error:e,
         }));
+        throw  e;
     }finally {
         dispatchAction(handlerActions.solaceContextChanged(initState.solaceContext.getContextPayload()))
     }
@@ -135,6 +138,7 @@ export async function sendCacheRequestOfOneSession(action:Action<types.ISendCach
                 name:SEND_CACHE_REQUEST_OF_ONE_SESSION_ERR_MSG,
                 error:e,
             }));
+            throw  e;
         }
 
     }))

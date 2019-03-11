@@ -334,7 +334,7 @@ export default class SolaceContext{
     // publish & subscribe
 
     publishOneTxtMsgOfOneSession = (
-        sessionId:string, topicName:string, msgText:string, userDataStr:string,userPropertyMap:any
+        sessionId:string, topicName:string, msgText:string, userDataStr:string = "",userPropertyMap:any = {}
     )=>{
         if(!!this.sessionContextDict[sessionId]){
             const context:SessionContext = this.sessionContextDict[sessionId];

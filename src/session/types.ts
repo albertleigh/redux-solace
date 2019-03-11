@@ -16,10 +16,10 @@ export interface ICreateAndConnectSessionResPayload extends BaseResponsePayload{
 
 
 export interface IDisconnectAndRemoveOneSessionPayload extends BaseRequestPayload{
-
+    sessionId:string,
 }
 export interface IDisconnectAndRemoveOneSessionResPayload extends BaseResponsePayload{
-
+    result?:number,
 }
 
 
@@ -27,15 +27,19 @@ export interface ICloseAndRemoveAllSessionsPayload extends BaseRequestPayload{
 
 }
 export interface ICloseAndRemoveAllSessionsResPayload extends BaseResponsePayload{
-
+    result?:number,
 }
 
 
 export interface ISendCacheRequestOfOneSessionPayload extends BaseRequestPayload{
-
+    sessionId:string,
+    topicName:string,
+    requestId:string,
+    cb?:Function,
+    userObj?:any
 }
 export interface ISendCacheRequestOfOneSessionResPayload extends BaseResponsePayload{
-
+    arguments?:IArguments,
 }
 
 export interface ISolaceContextChangedEventPayload extends ISolaceContextPayload {

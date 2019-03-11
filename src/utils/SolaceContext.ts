@@ -301,8 +301,8 @@ export default class SolaceContext{
     };
 
     sendCacheRequestOfOneSession = (
-        sessionId, topicName,
-        requestId, cb, userObj
+        sessionId:string, topicName:string,
+        requestId:string, cb:Function, userObj:any = {}
     ):void=>{
         if (this.sessionContextDict[sessionId] && this.sessionContextDict[sessionId].session){
             // assert we have one session obj

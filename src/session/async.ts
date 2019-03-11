@@ -61,3 +61,82 @@ export async function createAndConnectSession(action:Action<types.ICreateAndConn
         throw CREATE_SESSION_ERR_MSG;
     }
 }
+
+export async function disconnectAndRemoveOneSession(action:Action<types.IDisconnectAndRemoveOneSessionPayload>)
+    :Promise<Action<types.IDisconnectAndRemoveOneSessionResPayload>>
+{
+    const { sessionId } = action.payload;
+
+    let sessionClosedCnt = 0;
+
+    try{
+        sessionClosedCnt = initState.solaceContext.disconnectAndRemoveOneSession(sessionId);
+        const responseAction = handlerActions.disconnectAndRemoveOneSessionRes({result:sessionClosedCnt});
+        dispatchAction(responseAction);
+        return responseAction;
+    }catch (e) {
+        console.error(e.message);
+        dispatchAction(handlerActions.disconnectAndRemoveOneSessionRes({
+            result: sessionClosedCnt,
+            name:CLOSE_SESSION_ERR_MSG,
+            error:e,
+        }));
+    }finally {
+        dispatchAction(handlerActions.solaceContextChanged(initState.solaceContext.getContextPayload()))
+    }
+}
+
+export async function closeAndRemoveAllSessions(action:Action<types.ICloseAndRemoveAllSessionsPayload>)
+    :Promise<Action<types.ICloseAndRemoveAllSessionsResPayload>>
+{
+    let sessionClosedCnt = 0;
+    try {
+        sessionClosedCnt = initState.solaceContext.disconnectAllSessions();
+        const responseAction = handlerActions.closeAndRemoveAllSessionRes({result:sessionClosedCnt});
+        dispatchAction(responseAction);
+        return responseAction;
+    }catch (e) {
+        console.error(e.message);
+        dispatchAction(handlerActions.closeAndRemoveAllSessionRes({
+            result: sessionClosedCnt,
+            name:CLOSE_ALL_SESSION_ERR_MSG,
+            error:e,
+        }));
+    }finally {
+        dispatchAction(handlerActions.solaceContextChanged(initState.solaceContext.getContextPayload()))
+    }
+}
+
+export async function sendCacheRequestOfOneSession(action:Action<types.ISendCacheRequestOfOneSessionPayload>)
+    :Promise<Action<types.ISendCacheRequestOfOneSessionResPayload>>
+{
+    const {
+        sessionId, topicName, requestId, userObj, cb
+    } = action.payload;
+
+    return new Promise<Action<types.ISendCacheRequestOfOneSessionResPayload>>(((resolve, reject) => {
+
+        const wrappedCb = function () {
+            const responseAction =  handlerActions.sendCacheRequestOfOneSessionRes({arguments});
+            dispatchAction(handlerActions.sendCacheRequestOfOneSessionRes({arguments}));
+            if (cb){
+                cb.apply(null,arguments)
+            }
+            resolve(responseAction);
+        };
+
+        try{
+            initState.solaceContext.sendCacheRequestOfOneSession(
+                sessionId, topicName, requestId, wrappedCb, userObj
+            )
+        }catch (e) {
+            console.error(e.message);
+            dispatchAction(handlerActions.sendCacheRequestOfOneSessionRes({
+                name:SEND_CACHE_REQUEST_OF_ONE_SESSION_ERR_MSG,
+                error:e,
+            }));
+        }
+
+    }))
+
+}

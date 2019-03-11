@@ -1,4 +1,5 @@
 import {Store } from 'redux';
+import {Action} from 'redux-actions';
 import solace from 'solclientjs/lib-browser/solclient';
 
 import SolaceContext from './utils/SolaceContext';
@@ -19,6 +20,13 @@ export const initState:IInitState = {
 
 window.solace = solace;
 window.solaceContext = initState.solaceContext;
+
+export function dispatchAction( action: Action<any> ) {
+    if (initState.store){
+        const { dispatch } = initState.store;
+        dispatch(action);
+    }
+}
 
 function init(store?:Store<any>) {
     if (store){

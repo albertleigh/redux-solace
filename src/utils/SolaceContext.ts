@@ -245,6 +245,9 @@ export default class SolaceContext{
         oneSession = this.solace.SolclientFactory.createSession(sessionProperty);
 
         // add default disconnected hook
+        if (!eventHooks[this.solace.DISCONNECTED]){
+            eventHooks[this.solace.DISCONNECTED] = [];
+        }
         eventHooks[this.solace.DISCONNECTED].push((sessionEvent)=>{
             console.log('[redux-solace] one session disconnected');
             if (oneSession){

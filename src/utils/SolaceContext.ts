@@ -526,16 +526,16 @@ export default class SolaceContext{
         if (!!this.sessionContextDict[sessionId]){
             const context = this.sessionContextDict[sessionId];
             const message = this.solace.SolclientFactory.createMessage();
-            const _userPropertyMap = new this.solace.SDTMapContainer();
+            const sdtUserPropertyMap = new this.solace.SDTMapContainer();
             // const correlationKey = receivedMsg.getCorrelationKey();
 
             Object.keys(userPropertyMap).forEach((oneKey)=>{
                 const oneField = this.solace.SDTField.create(this.solace.SDTFieldType.STRING,''+userPropertyMap[oneKey]);
-                _userPropertyMap.addField(oneKey,oneField);
+                sdtUserPropertyMap.addField(oneKey,oneField);
             });
 
             message.setUserData(userDataStr);
-            message.setUserPropertyMap(_userPropertyMap);
+            message.setUserPropertyMap(sdtUserPropertyMap);
             message.setBinaryAttachment(msgTxt);
 
             context.session.sendReply(

@@ -43,8 +43,8 @@ export async function sendOneTxtMsgRequestOfOneSession(action:Action<types.ISend
                     name: SEND_ONE_TXT_MSG_REQUEST_OF_ONE_SESSION_ERR_MSG,
                     error:e
                 });
-
-
+                dispatchAction(responseAction);
+                reject(e);
             },
             userObject, deliverToOne, timeout
         )

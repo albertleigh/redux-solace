@@ -1,6 +1,6 @@
 import {Store } from 'redux';
 import {Action} from 'redux-actions';
-import solace from 'solclientjs/lib-browser/solclient';
+import * as solace from 'solclientjs/lib-browser/solclient';
 
 import SolaceContext from './utils/SolaceContext';
 

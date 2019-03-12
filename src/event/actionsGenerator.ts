@@ -1,4 +1,4 @@
-import solace from 'solclientjs/lib-browser/solclient';
+import * as solace from 'solclientjs/lib-browser/solclient';
 
 import { IEventActionDict } from './types'
 

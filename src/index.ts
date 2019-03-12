@@ -1,4 +1,5 @@
-export { default as solace } from 'solclientjs/lib-browser/solclient';
+import * as solaceRef from 'solclientjs/lib-browser/solclient';
+export const solace = solaceRef;
 export { default as Session } from './session';
 export { default as PublishSubscribe } from './publishSubscribe';
 export { default as Queue } from './queue';

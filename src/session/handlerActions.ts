@@ -2,7 +2,7 @@ import { Action } from 'redux-actions';
 import createFSA, { ActionCreator } from '../utils/createFSA';
 
 import * as types from './types';
-import * as actionTypes from './actions.constant';
+import * as actionTypes from './actions';
 
 export const createAndConnectSessionRes:ActionCreator<types.ICreateAndConnectSessionResPayload> =
     createFSA<types.ICreateAndConnectSessionResPayload>(

@@ -1,16 +1,13 @@
-import * as actionTypes from './types'
-import * as actionsCreators from './actions'
+import * as actionsRefs from './actions'
+import * as typesRefs from './types'
 import * as asyncsRefs from './async';
 
-
-export const actions = {
-    ...actionTypes,
-    ...actionsCreators,
-};
-
+export const actions = actionsRefs;
+export const types = typesRefs;
 export const asyncs = asyncsRefs;
 
 export default {
     actions,
+    types,
     asyncs,
 }

@@ -2,7 +2,7 @@ import { Action } from 'redux-actions';
 import createFSA, { ActionCreator } from '../utils/createFSA';
 
 import * as types from './types';
-import * as actionTypes from './actions.constant';
+import * as actionTypes from './actions';
 
 export const sendOneTxtMsgRequestOfOneSessionRes:ActionCreator<types.ISendOneTxtMsgRequestOfOneSessionResPayload> =
     createFSA<types.ISendOneTxtMsgRequestOfOneSessionResPayload>(

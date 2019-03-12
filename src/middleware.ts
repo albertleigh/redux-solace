@@ -7,7 +7,7 @@ import {
     DISCONNECT_AND_REMOVE_ONE_SESSION,
     CLOSE_AND_REMOVE_ALL_SESSIONS,
     SEND_CACHE_REQUEST_OF_ONE_SESSION,
-} from './session/actions.constant';
+} from './session/actions';
 import {
     createAndConnectSessionHandler,
     disconnectAndRemoveOneSessionHandler,
@@ -20,7 +20,7 @@ import {
     PUBLISH_ONE_TXT_MSG_TO_ONE_SESSION,
     SUBSCRIBE_ONE_TOPIC_OF_ONE_SESSION,
     UNSUBSCRIBE_ONE_TOPIC_OF_ONE_SESSION,
-} from './publishSubscribe/actions.constant';
+} from './publishSubscribe/actions';
 import {
     publishOneTxtMsgToOneSessionHanlder,
     subscribeOneTopicOfOneSessionHanlder,
@@ -33,7 +33,7 @@ import init from './init';
 import {
     SEND_ONE_TXT_MSG_TO_QUEUE_OF_ONE_SESSION,
     CONSUME_FROM_QUEUE_OF_ONE_SESSION
-} from './queue/actions.constant';
+} from './queue/actions';
 import {
     sendOneTxtMsgToQueueOfOneSessionHanlder,
     consumeFromQueueOfOneSessionHanlder,
@@ -43,7 +43,7 @@ import {
 import {
     SEND_ONE_TXT_MSG_REQUEST_OF_ONE_SESSION,
     REPLY_ONE_MSG_VIA_TXT_OF_ONE_SESSION,
-} from './request/actions.constant'
+} from './request/actions'
 import {
     sendOneTxtMsgRequestOfOneSessionHanlder,
     replyOneMsgViaTxtOfOneSessionHanlder,

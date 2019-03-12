@@ -495,16 +495,16 @@ export default class SolaceContext{
         if (!!this.sessionContextDict[sessionId]){
             const context = this.sessionContextDict[sessionId];
             const message = this.solace.SolclientFactory.createMessage();
-            const _userPropertyMap = new this.solace.SDTMapContainer();
+            const sdtUserPropertyMap = new this.solace.SDTMapContainer();
 
             Object.keys(userPropertyMap).forEach((oneKey)=>{
                 const oneField = this.solace.SDTField.create(this.solace.SDTFieldType.STRING,''+userPropertyMap[oneKey]);
-                _userPropertyMap.addField(oneKey,oneField);
+                sdtUserPropertyMap.addField(oneKey,oneField);
             });
 
             message.setUserData(userDataStr);
-            message.setUserPropertyMap(_userPropertyMap);
-            message.setDestination(this.solace.SolclientFactory.createDurableQueueDestination(topicName));
+            message.setUserPropertyMap(sdtUserPropertyMap);
+            message.setDestination(this.solace.SolclientFactory.createTopicDestination(topicName));
             message.setBinaryAttachment(msgTxt);
             message.setDeliveryMode(this.solace.MessageDeliveryModeType.DIRECT);
             message.setDeliverToOne(deliverToOne);

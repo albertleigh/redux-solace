@@ -484,7 +484,7 @@ export default class SolaceContext{
 
     sendTxtMsgReqOfOneSession = (
         sessionId:string, topicName:string, msgTxt:string, userDataStr:string, userPropertyMap:any,
-        replyReceivedCb:Function,replyFailedCb:Function,
+        replyReceivedCb:(session:any,message:any)=>void,replyFailedCb:(session:any,e:Error)=>void,
         userObj:any = {}, deliverToOne:Boolean = true, timeout:number = 5000
     ) =>{
         if (!!this.sessionContextDict[sessionId]){
@@ -516,7 +516,7 @@ export default class SolaceContext{
     };
 
     replyOneMsgViaTxtOfOneSession= (
-        receivedMsg, sessionId, msgTxt, userDataStr, userPropertyMap
+        receivedMsg:any, sessionId:string, msgTxt:string="", userDataStr:string="", userPropertyMap:any={}
     ) =>{
         if (!!this.sessionContextDict[sessionId]){
             const context = this.sessionContextDict[sessionId];

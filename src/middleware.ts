@@ -29,6 +29,16 @@ import {
 
 import init from './init';
 
+// request
+import {
+    SEND_ONE_TXT_MSG_REQUEST_OF_ONE_SESSION,
+    REPLY_ONE_MSG_VIA_TXT_OF_ONE_SESSION,
+} from './request/actions.constant'
+import {
+    sendOneTxtMsgRequestOfOneSessionHanlder,
+    replyOneMsgViaTxtOfOneSessionHanlder,
+} from './request/handlers'
+
 declare const window;
 
 const actionHandlers = {
@@ -42,6 +52,9 @@ const actionHandlers = {
     [PUBLISH_ONE_TXT_MSG_TO_ONE_SESSION]:publishOneTxtMsgToOneSessionHanlder,
     [SUBSCRIBE_ONE_TOPIC_OF_ONE_SESSION]:subscribeOneTopicOfOneSessionHanlder,
     [UNSUBSCRIBE_ONE_TOPIC_OF_ONE_SESSION]:unsubscribeOneTopicOfOneSessionHanlder,
+    // request
+    [SEND_ONE_TXT_MSG_REQUEST_OF_ONE_SESSION]:sendOneTxtMsgRequestOfOneSessionHanlder,
+    [REPLY_ONE_MSG_VIA_TXT_OF_ONE_SESSION]:replyOneMsgViaTxtOfOneSessionHanlder,
 };
 
 export default ():Middleware => {

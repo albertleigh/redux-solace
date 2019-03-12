@@ -195,7 +195,7 @@ export default class SolaceContext{
             if (self.sessionContextDict[sessionId].eventHooks[eventCode]){
                 self.sessionContextDict[sessionId].eventHooks[eventCode].forEach(
                     (oneFun)=>{
-                        oneFun.apply(_arguments);
+                        oneFun.apply(null,_arguments);
                     }
                 )
             }

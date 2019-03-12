@@ -1,5 +1,5 @@
 import {ActionHandlerParams} from "../GlobalTypes";
-import * as asyncs from './async';
+import * as asyncs from './asyncs';
 
 export const sendOneTxtMsgToQueueOfOneSessionHanlder = (params:ActionHandlerParams)=>{
     const { action } = params;

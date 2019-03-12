@@ -84,7 +84,7 @@ export async function unsubscribeOneTopicOfOneSession(action:Action<types.IUnsub
     }catch (e) {
         console.error(e.message);
         dispatchAction(handlerActions.unsubscribeOneTopicOfOneSessionRes({
-            name:SUBSCRIBE_ONE_TOPIC_OF_ONE_SESSION_ERR_MSG,
+            name:UNSUBSCRIBE_ONE_TOPIC_OF_ONE_SESSION_ERR_MSG,
             error:e,
         }));
         throw  e;

@@ -411,7 +411,7 @@ export default class SolaceContext{
     // queue and confirmed delivery
 
     sendOneTxtMsgToQueueOfOneSession = (
-        sessionId:string, queueName:string, msgTxt:string, userDataStr:string, userPropertyMap:any, correlationKey:any=null
+        sessionId:string, queueName:string, msgTxt:string, userDataStr:string="", userPropertyMap:any={}, correlationKey:any=null
     ) =>{
         if (!!this.sessionContextDict[sessionId]){
             const context = this.sessionContextDict[sessionId];
@@ -441,7 +441,7 @@ export default class SolaceContext{
     };
 
     consumeFromQueueOfOneSession = (
-        sessionId:string, queueName:string, onMsgCb:Function,
+        sessionId:string, queueName:string, onMsgCb:(sessionEvent:any)=>void,
         autoAck:boolean=true, otherCbDict:{[key:number]:Function,[key:string]:Function} = {}
     ) =>{
         if(!!this.sessionContextDict[sessionId]){

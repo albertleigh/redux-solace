@@ -29,6 +29,16 @@ import {
 
 import init from './init';
 
+// queue
+import {
+    SEND_ONE_TXT_MSG_TO_QUEUE_OF_ONE_SESSION,
+    CONSUME_FROM_QUEUE_OF_ONE_SESSION
+} from './queue/actions.constant';
+import {
+    sendOneTxtMsgToQueueOfOneSessionHanlder,
+    consumeFromQueueOfOneSessionHanlder,
+} from './queue/handlers';
+
 // request
 import {
     SEND_ONE_TXT_MSG_REQUEST_OF_ONE_SESSION,
@@ -52,6 +62,9 @@ const actionHandlers = {
     [PUBLISH_ONE_TXT_MSG_TO_ONE_SESSION]:publishOneTxtMsgToOneSessionHanlder,
     [SUBSCRIBE_ONE_TOPIC_OF_ONE_SESSION]:subscribeOneTopicOfOneSessionHanlder,
     [UNSUBSCRIBE_ONE_TOPIC_OF_ONE_SESSION]:unsubscribeOneTopicOfOneSessionHanlder,
+    // queue
+    [SEND_ONE_TXT_MSG_TO_QUEUE_OF_ONE_SESSION]:sendOneTxtMsgToQueueOfOneSessionHanlder,
+    [CONSUME_FROM_QUEUE_OF_ONE_SESSION]:consumeFromQueueOfOneSessionHanlder,
     // request
     [SEND_ONE_TXT_MSG_REQUEST_OF_ONE_SESSION]:sendOneTxtMsgRequestOfOneSessionHanlder,
     [REPLY_ONE_MSG_VIA_TXT_OF_ONE_SESSION]:replyOneMsgViaTxtOfOneSessionHanlder,

@@ -1,7 +1,5 @@
 import { BaseRequestPayload, BaseResponsePayload } from '../base/BasePayload';
 
-import { ISessionContextConfig, ISolaceContextPayload, SessionContext } from '../utils/SolaceContext';
-
 export interface IPublishOneTxtMsgToOneSessionPayload extends BaseRequestPayload{
     sessionId:string,
     topicName:string,

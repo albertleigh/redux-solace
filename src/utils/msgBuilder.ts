@@ -51,12 +51,12 @@ export default (sessionEvent:any):IMsgBuilt=>{
     const userDataStr = sessionEvent.getUserData()?sessionEvent.getUserData():null;
     const userPropertyMap={};
 
-    const _rawUserPropertyMap  = sessionEvent.getUserPropertyMap();
+    const rawUserPropertyMap  = sessionEvent.getUserPropertyMap();
 
-    if (_rawUserPropertyMap){
-        _rawUserPropertyMap.getKeys().forEach((oneKey)=>{
-            const oneField = _rawUserPropertyMap.getField(oneKey);
-            if (oneField.getType()==initState.solace.oneField.STRING){
+    if (rawUserPropertyMap){
+        rawUserPropertyMap.getKeys().forEach((oneKey)=>{
+            const oneField = rawUserPropertyMap.getField(oneKey);
+            if (oneField.getType()==initState.solace.SDTFieldType.STRING){
                 userPropertyMap[oneKey] = oneField.getValue();
             }
         })

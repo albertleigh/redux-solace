@@ -1,4 +1,4 @@
-import uuid from 'uuid/v4';
+import * as uuid from 'uuid/v4';
 
 let totalSessionCreatedSeq = 0;
 

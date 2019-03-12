@@ -44,9 +44,9 @@ export function doBuildFromSdtMap(sdtMapContainer):any{
 export default (sessionEvent:any):IMsgBuilt=>{
     let attachment;
 
-    const destination = sessionEvent.setDestination()?{
-        type: sessionEvent.setDestination().getType(),
-        name: sessionEvent.setDestination().getName(),
+    const destination = sessionEvent.getDestination()?{
+        type: sessionEvent.getDestination().getType(),
+        name: sessionEvent.getDestination().getName(),
     }:null;
     const userDataStr = sessionEvent.getUserData()?sessionEvent.getUserData():null;
     const userPropertyMap={};
@@ -62,7 +62,7 @@ export default (sessionEvent:any):IMsgBuilt=>{
         })
     }
 
-    if (sessionEvent.getType()===0){
+    if (sessionEvent.getType()===initState.solace.MessageType.BINARY){
         // json str payload
         try{
             attachment = JSON.parse(sessionEvent.getBinaryAttachment());
@@ -71,7 +71,7 @@ export default (sessionEvent:any):IMsgBuilt=>{
         }
     }
 
-    if (sessionEvent.getType()===1){
+    if (sessionEvent.getType()===initState.solace.MessageType.MAP){
         const container = sessionEvent.getSdtContainer();
         if (container.getType() === initState.solace.SDTFieldType.MAP){
             attachment = doBuildFromSdtMap(container.getValue())

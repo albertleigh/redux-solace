@@ -23,6 +23,8 @@ export interface ISendOneTxtMsgRequestOfOneSessionResPayload extends BaseRespons
     userObject?:any,
     session?:any,
     message?:any,
+    msgText?:string,
+    event?:any,
 }
 
 export interface IReplyOneMsgViaTxtOfOneSessionPayload extends BaseRequestPayload{

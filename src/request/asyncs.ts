@@ -38,10 +38,11 @@ export async function sendOneTxtMsgRequestOfOneSession(action:Action<types.ISend
             (session, e)=>{
                 const responseAction = handlerActions.sendOneTxtMsgRequestOfOneSessionRes({
                     sessionId, topicName,
-                    userDataStr, userPropertyMap,
+                    msgText, userDataStr, userPropertyMap,
                     userObject, session,
+                    event:e,
                     name: SEND_ONE_TXT_MSG_REQUEST_OF_ONE_SESSION_ERR_MSG,
-                    error:e
+                    error:new Error(SEND_ONE_TXT_MSG_REQUEST_OF_ONE_SESSION_ERR_MSG)
                 });
                 dispatchAction(responseAction);
                 reject(e);

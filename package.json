@@ -1,6 +1,6 @@
 {
   "name": "redux-solace",
-  "version": "0.20.10",
+  "version": "0.20.10-beta",
   "description": "solace redux middleware wrapper",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,8 @@
     "build:copy-files": "node ./scripts/copy-files.js",
     "build": "yarn prebuild && yarn build:es2015 && yarn build:copy-files",
     "build-prod": "yarn prebuild && yarn build:es2015-prod && yarn build:copy-files",
+    "release-staging": "yarn build && npm publish build --registry=https://albertli.ddns.net:9004/repository/npm-private/",
+    "release":"yarn build-prod && npm publish build --access public",
     "test": "node scripts/test/js"
   },
   "repository": {

@@ -19,7 +19,7 @@ export default function createFSA<T>(type:string, payloadCreator:(payload:T)=>an
 
         return <Action<any>> {
             ...oriPayload,
-            error:payload && payload.name === 'Error',
+            error:payload.error && payload.name,
         }
 
     }

@@ -56,13 +56,13 @@ export default (sessionEvent:any):IMsgBuilt=>{
     if (_rawUserPropertyMap){
         _rawUserPropertyMap.getKeys().forEach((oneKey)=>{
             const oneField = _rawUserPropertyMap.getField(oneKey);
-            if (oneField.getType()===initState.solace.oneField.STRING){
+            if (oneField.getType()==initState.solace.oneField.STRING){
                 userPropertyMap[oneKey] = oneField.getValue();
             }
         })
     }
 
-    if (sessionEvent.getType()===initState.solace.MessageType.BINARY){
+    if (sessionEvent.getType()==initState.solace.MessageType.BINARY){
         // json str payload
         try{
             attachment = JSON.parse(sessionEvent.getBinaryAttachment());
@@ -71,9 +71,9 @@ export default (sessionEvent:any):IMsgBuilt=>{
         }
     }
 
-    if (sessionEvent.getType()===initState.solace.MessageType.MAP){
+    if (sessionEvent.getType()==initState.solace.MessageType.MAP){
         const container = sessionEvent.getSdtContainer();
-        if (container.getType() === initState.solace.SDTFieldType.MAP){
+        if (container.getType() == initState.solace.SDTFieldType.MAP){
             attachment = doBuildFromSdtMap(container.getValue())
         }else{
             attachment = container.getValue();

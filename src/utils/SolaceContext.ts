@@ -121,7 +121,7 @@ export default class SolaceContext{
         let id = uuid();
         while(!!this.sessionContextDict[id]){id = uuid()}
         this.sessionContextDict[id] = new SessionContext(session,id,sessionCache,eventHooks,config);
-        this.defaultSessionId = this.defaultSessionId===null?id:this.defaultSessionId;
+        this.defaultSessionId = this.defaultSessionId?this.defaultSessionId:id;
         this.total++;
         totalSessionCreatedSeq++;
         return id;
@@ -146,7 +146,7 @@ export default class SolaceContext{
     removeSession = (id:string):number => {
         if (!!this.sessionContextDict[id]){
             delete this.sessionContextDict[id];
-            if (id === this.defaultSessionId){
+            if (id == this.defaultSessionId){
                 const sessionIds = Object.keys(this.sessionContextDict);
                 this.defaultSessionId = sessionIds.length>0?sessionIds[0]:null;
             }
@@ -188,12 +188,14 @@ export default class SolaceContext{
 
     // session management session
 
-    private _generateOneEventHookOfOnesessionHandler = (sessionId:string,eventCode:(string|number)):((sessionEvent:any)=>void) =>{
-        return(sessionEvent)=>{
-            if (this.sessionContextDict[sessionId].eventHooks[eventCode]){
-                this.sessionContextDict[sessionId].eventHooks[eventCode].forEach(
+    private _generateOneEventHookOfOnesessionHandler = (sessionId:string,eventCode:(string|number)):Function =>{
+        const self = this;
+        return function(){
+            const _arguments = arguments;
+            if (self.sessionContextDict[sessionId].eventHooks[eventCode]){
+                self.sessionContextDict[sessionId].eventHooks[eventCode].forEach(
                     (oneFun)=>{
-                        oneFun(sessionEvent);
+                        oneFun.apply(_arguments);
                     }
                 )
             }
@@ -272,7 +274,7 @@ export default class SolaceContext{
             this.sessionContextDict[sessionId].eventHooks[eventCode] = [];
         }
 
-        if(!this.sessionContextDict[sessionId].eventHooks[eventCode].some((oneCb)=>(oneCb === cb))){
+        if(!this.sessionContextDict[sessionId].eventHooks[eventCode].some((oneCb)=>(oneCb == cb))){
             this.sessionContextDict[sessionId].eventHooks[eventCode].push(cb);
         }
     };
@@ -371,7 +373,7 @@ export default class SolaceContext{
     )=>{
         if(!!this.sessionContextDict[sessionId]){
             const context = this.sessionContextDict[sessionId];
-            if (context.subscribedTopics.some(one=>(one === topicName))){
+            if (context.subscribedTopics.some(one=>(one == topicName))){
                 console.log(`[redux-solace] already subscribed to ${topicName} and ready to consume msg`);
             }else{
                 console.log(`[redux-solace] subscribing to ${topicName}`);
@@ -393,7 +395,7 @@ export default class SolaceContext{
     )=>{
         if(!!this.sessionContextDict[sessionId]){
             const context = this.sessionContextDict[sessionId];
-            if (context.subscribedTopics.some(one=>(one === topicName))){
+            if (context.subscribedTopics.some(one=>(one == topicName))){
                 console.log(`[redux-solace] unsubscribe ${topicName}`);
                 context.session.unsubscribe(
                     this.solace.SolclientFactory.createTopicDestination(topicName),

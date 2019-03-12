@@ -1,6 +1,8 @@
 import actionsGenerator from './actionsGenerator';
 
-export const actionsDict = actionsGenerator();
+import {IEventActionDict} from './types';
+
+export const actionsDict:IEventActionDict = actionsGenerator();
 
 export default {
     actionsDict,

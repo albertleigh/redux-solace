@@ -42,7 +42,7 @@ export async function createAndConnectSession(action:Action<types.ICreateAndConn
         const solaceSessionEventDict = SolaceEvents.actionsDict;
         const responseAction = handlerActions.createAndConnectSessionRes({result:newSessionContext});
         Object.keys(solaceSessionEventDict).forEach(oneEvtCode => {
-            if (oneEvtCode === initState.solace.SessionEventCode.MESSAGE){
+            if (oneEvtCode == initState.solace.SessionEventCode.MESSAGE){
                 initState.solaceContext.addOneToEventHookOfOneSession(sessionId,oneEvtCode,(sessionEvent)=>{
                     const msgBuilt:IMsgBuilt = msgBuilder(sessionEvent);
                     dispatchAction(solaceSessionEventDict[oneEvtCode].action({

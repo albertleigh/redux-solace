@@ -1,0 +1,88 @@
+{
+  "name": "redux-solace",
+  "version": "0.20.10",
+  "description": "solace redux middleware wrapper",
+  "main": "index.js",
+  "scripts": {
+    "prebuild": "rimraf build",
+    "build:es2015": "tsc",
+    "build:es2015-prod": "tsc -p tsconfig.prod.json",
+    "build:copy-files": "node ./scripts/copy-files.js",
+    "build": "yarn prebuild && yarn build:es2015 && yarn build:copy-files",
+    "build-prod": "yarn prebuild && yarn build:es2015-prod && yarn build:copy-files",
+    "release-staging": "yarn build && npm publish build --registry=https://albertli.ddns.net:9004/repository/npm-private/",
+    "release":"yarn build-prod && npm publish build --access public",
+    "test": "node scripts/test/js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:albertleigh/redux-solace.git"
+  },
+  "keywords": [
+    "redux",
+    "solace",
+    "albert"
+  ],
+  "author": "Wentao Li <liwentao90@yahoo.com>",
+  "license": "MIT",
+  "dependencies": {
+    "redux": "^4.0.1",
+    "redux-actions": "^2.6.4",
+    "solclientjs": "=10.2.1",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.0",
+    "@types/node": "^10.12.21",
+    "@types/redux-actions": "^2.3.1",
+    "fs-extra": "^7.0.1",
+    "jest": "^24.1.0",
+    "jest-environment-jsdom": "^24.0.0",
+    "jest-environment-jsdom-global": "^1.1.0",
+    "redux-mock-store": "^1.5.3",
+    "rimraf": "^2.6.3",
+    "ts-jest": "^23.10.5",
+    "typescript": "^3.3.1"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx,js,jsx,mjs}",
+      "!src/event/index.ts",
+      "!src/system/index.ts",
+      "!src/index.ts"
+    ],
+    "setupFiles": [],
+    "testMatch": [
+      "**/__tests__/**/*.{ts,tsx,js,jsx,mjs}",
+      "**/?(*.)(spec|test).{ts,tsx,js,jsx,mjs}"
+    ],
+    "snapshotSerializers": [],
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "globals": {},
+    "testEnvironment": "jest-environment-jsdom-global",
+    "testURL": "http://localhost",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs)$",
+      "^.+\\.module\\.(css|sass|scss)$"
+    ],
+    "moduleNameMapper": {},
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "web.js",
+      "web.ts",
+      "js",
+      "json",
+      "web.tsx",
+      "web.jsx",
+      "jsx",
+      "node",
+      "mjs"
+    ]
+  }
+}

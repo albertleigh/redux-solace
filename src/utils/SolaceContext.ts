@@ -191,11 +191,11 @@ export default class SolaceContext{
     private _generateOneEventHookOfOnesessionHandler = (sessionId:string,eventCode:(string|number)):Function =>{
         const self = this;
         return function(){
-            const _arguments = arguments;
+            const iArguments = arguments;
             if (self.sessionContextDict[sessionId].eventHooks[eventCode]){
                 self.sessionContextDict[sessionId].eventHooks[eventCode].forEach(
                     (oneFun)=>{
-                        oneFun.apply(null,_arguments);
+                        oneFun.apply(null,iArguments);
                     }
                 )
             }

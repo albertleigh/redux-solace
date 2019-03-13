@@ -34,7 +34,7 @@ export interface ICloseAndRemoveAllSessionsResPayload extends BaseResponsePayloa
 export interface ISendCacheRequestOfOneSessionPayload extends BaseRequestPayload{
     sessionId:string,
     topicName:string,
-    requestId:string,
+    requestId:number,
     cb?:Function,
     userObj?:any
 }

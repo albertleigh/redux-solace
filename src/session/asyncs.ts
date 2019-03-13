@@ -134,11 +134,13 @@ export async function sendCacheRequestOfOneSession(action:Action<types.ISendCach
             )
         }catch (e) {
             console.error(e.message);
-            dispatchAction(handlerActions.sendCacheRequestOfOneSessionRes({
+            const responseAction =  handlerActions.sendCacheRequestOfOneSessionRes({
                 name:SEND_CACHE_REQUEST_OF_ONE_SESSION_ERR_MSG,
                 error:e,
-            }));
-            throw  e;
+            });
+            dispatchAction(responseAction);
+            reject(responseAction);
+            // throw  e;
         }
 
     }))

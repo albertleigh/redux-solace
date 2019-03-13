@@ -1,6 +1,6 @@
 {
   "name": "redux-solace",
-  "version": "0.20.10-beta",
+  "version": "0.20.10",
   "description": "solace redux middleware wrapper",
   "main": "index.js",
   "scripts": {

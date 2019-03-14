@@ -120,8 +120,8 @@ export async function sendCacheRequestOfOneSession(action:Action<types.ISendCach
     return new Promise<Action<types.ISendCacheRequestOfOneSessionResPayload>>(((resolve, reject) => {
 
         const wrappedCb = function () {
-            const responseAction =  handlerActions.sendCacheRequestOfOneSessionRes({arguments});
-            dispatchAction(handlerActions.sendCacheRequestOfOneSessionRes({arguments}));
+            const responseAction =  handlerActions.sendCacheRequestOfOneSessionRes({iArguments:arguments});
+            dispatchAction(responseAction);
             if (cb){
                 cb.apply(null,arguments)
             }

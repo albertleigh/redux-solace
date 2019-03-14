@@ -4,8 +4,8 @@ export interface IPublishOneTxtMsgToOneSessionPayload extends BaseRequestPayload
     sessionId:string,
     topicName:string,
     msgText:string,
-    userDataStr:string,
-    userPropertyMap:any,
+    userDataStr?:string,
+    userPropertyMap?:any,
 }
 export interface IPublishOneTxtMsgToOneSessionResPayload extends BaseResponsePayload{
 }

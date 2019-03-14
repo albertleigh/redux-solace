@@ -64,14 +64,14 @@ export async function consumeFromQueueOfOneSession(action:Action<types.IConsumeF
             if (otherCallbackDict && otherCallbackDict[oneEventCode]){
                 wrappedCbDict[oneEventCode] = function () {
                     dispatchAction(EventActions[oneEventCode].action({
-                        sessionId, queueName, arguments
+                        sessionId, queueName, iArguments:arguments
                     }));
                     return otherCallbackDict[oneEventCode]();
                 }
             }else{
                 wrappedCbDict[oneEventCode] = function () {
                     dispatchAction(EventActions[oneEventCode].action({
-                        sessionId, queueName, arguments
+                        sessionId, queueName, iArguments:arguments
                     }));
                 }
             }

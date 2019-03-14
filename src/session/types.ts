@@ -39,7 +39,7 @@ export interface ISendCacheRequestOfOneSessionPayload extends BaseRequestPayload
     userObj?:any
 }
 export interface ISendCacheRequestOfOneSessionResPayload extends BaseResponsePayload{
-    arguments?:IArguments,
+    iArguments?:IArguments,
 }
 
 export interface ISolaceContextChangedEventPayload extends ISolaceContextPayload {

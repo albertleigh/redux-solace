@@ -14,6 +14,8 @@ Redux-solace wraps the solace js library into a reusable redux middleware
 * Support Queue msg
 * Support request/reply msg
 
+[Documentation](./DOCUMENTATION.md)
+
 ## Quick start
 
 ### Install

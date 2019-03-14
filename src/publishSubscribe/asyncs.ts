@@ -23,7 +23,7 @@ export async function publishOneTxtMsgToOneSession(action:Action<types.IPublishO
     try{
         initState.solaceContext.publishOneTxtMsgOfOneSession(
             sessionId, topicName, msgText,
-            userDataStr?userDataStr:"", userPropertyMap?userPropertyMap:{}
+            userDataStr, userPropertyMap,
         );
         const responoseAction = handlerActions.publishOneTxtMsgToOneSessionRes({});
         dispatchAction(responoseAction);

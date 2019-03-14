@@ -18,9 +18,6 @@ export const initState:IInitState = {
     solaceContext: new SolaceContext(solace),
 };
 
-window.solace = solace;
-window.solaceContext = initState.solaceContext;
-
 export function dispatchAction( action: Action<any> ) {
     if (initState.store){
         const { dispatch } = initState.store;
@@ -29,6 +26,8 @@ export function dispatchAction( action: Action<any> ) {
 }
 
 function init(store?:Store<any>) {
+    window.solace = solace;
+    window.solaceContext = initState.solaceContext;
     if (store){
         initState.store = store;
     }

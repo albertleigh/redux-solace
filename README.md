@@ -14,6 +14,8 @@ Redux-solace wraps the solace js library into a reusable redux middleware
 * Support Queue msg
 * Support request/reply msg
 
+[Documentation](./DOCUMENTATION.md)
+
 ## Quick start
 
 ### Install
@@ -159,5 +161,5 @@ but redux-solace brings flexibility, avoids delegate sever preprocess or schema 
 [LICENSE]: ./LICENSE.md
 [CHANGELOG]: ./CHANGELOG.md
 
-[version-badge]: https://img.shields.io/badge/version-0.20.10-blue.svg
+[version-badge]: https://img.shields.io/badge/version-0.20.20-blue.svg
 [license-badge]: https://img.shields.io/badge/license-MIT-blue.svg

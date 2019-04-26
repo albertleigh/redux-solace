@@ -181,14 +181,12 @@ SolaceEvent.actionDict:
 createSolaceMiddleware
 - middleware creator function
 
-##Action details of each package
+## Action details of each package
 
-###Session.action:
-
+### Session.action:
 The package to handle creating connecting or removing of one or more sessions
 
-####CREATE_AND_CONNECT_SESSION
-
+#### CREATE_AND_CONNECT_SESSION
 `Sessions.actions.createAndConnectSession({hostUrl,vpn,username,pass})`
 
 The action to create a solace session

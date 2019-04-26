@@ -182,10 +182,13 @@ createSolaceMiddleware
 - middleware creator function
 
 ##Action details of each package
+
 ###Session.action:
+
 The package to handle creating connecting or removing of one or more sessions
 
 ####CREATE_AND_CONNECT_SESSION
+
 `Sessions.actions.createAndConnectSession({hostUrl,vpn,username,pass})`
 
 The action to create a solace session

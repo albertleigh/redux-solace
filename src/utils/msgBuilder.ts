@@ -13,8 +13,8 @@ export interface IMsgBuilt {
 
 export function doBuildFromSdtMap(sdtMapContainer):any{
     const obj = {};
-    const keys = sdtMapContainer?sdtMapContainer.getKeys():{};
-    for (let key in keys) {
+    const keys = sdtMapContainer?sdtMapContainer.getKeys():[];
+    for (const key of keys) {
         switch (sdtMapContainer.getField(key).getType()) {
             case initState.solace.SDTFieldType.BOOL:
             case initState.solace.SDTFieldType.BYTEARRAY:

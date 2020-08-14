@@ -81,7 +81,7 @@ export default ():Middleware => {
                 store, next, action,
                 // solace:initState.solace,
                 // solaceContext:initState.solaceContext,
-            };
+            } as any;
 
             const handler = actionHandlers[action.type];
             if (handler){

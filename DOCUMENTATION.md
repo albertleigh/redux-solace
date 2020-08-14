@@ -1,6 +1,6 @@
 ## Big pic
 The middleware is designed to intercept certain actions, basing upon the payload of the actions, 
-certain apis of solace client js will triggered. After these, if needed a FSA(flux standard action) with
+certain apis of solace client js will trigger. After these, if needed a FSA(flux standard action) with
 `_RES` suffix will be dispatched into redux registered.
 
 Moreover, another set of similar promise based apis are also provided since something calling direct via promise is much easier.
@@ -206,7 +206,7 @@ hostUrl| The url to create and connect a solace session, and this url must start
 vpn | the vpn name
 username| the user name
 sessionCache| the cache name of the session
-pass | the passord of the user
+pass | the password of the user
 config.usePerMsgAck| the boolean flag to enable per msg acknowledge mode or not for queue comm pattern
 
 ```javascript
@@ -249,10 +249,8 @@ config.usePerMsgAck| the boolean flag to enable per msg acknowledge mode or not 
 
  
 
-Key | Description
-
+Key|Description
 ---|---
-
 action.err|true if it were an err response.
 
 action.payload.result|The solaceContext Object of the session you just created. *solaceContext will be exlplained in the latter es6/es5 section*
@@ -288,13 +286,9 @@ Actions to close and remove a solace session
  
 
 Parameters | Description
-
 ---|---
-
 sessionId|the id of the session that you want to close
-
 callback |optional callback when succeed, could be undefined
-
 errorCallback |optional callback when failed, could be undefined
 
  
@@ -332,11 +326,8 @@ errorCallback |optional callback when failed, could be undefined
  
 
 Key | Description
-
 ---|---
-
 action.err|true if it were an err response.
-
 action.payload.result|the the total number of the sessions closed
 
  
@@ -366,11 +357,8 @@ Actions to close and remove all solace sessions
  
 
 Parameters | Description
-
 ---|---
-
 callback |optional callback when succeed, could be undefined
-
 errorCallback |optional callback when failed, could be undefined
 
  
@@ -408,9 +396,7 @@ errorCallback |optional callback when failed, could be undefined
  
 
 Key | Description
-
 ---|---
-
 result | Total number of connection closed
 
  
@@ -428,19 +414,12 @@ result | Total number of connection closed
  
 
 Parameters | Description
-
 ---|---
-
 sessionId| The id of the session to fire a cache request
-
 topicName| The topic destination for which the cache request will be made.
-
 requestId| The application-assigned ID number for the request.
-
 userObj| A context object to be returned with the callback.
-
 callback |optional callback when succeed, could be undefined
-
 errorCallback |optional callback when failed, could be undefined
 
  
@@ -450,9 +429,7 @@ errorCallback |optional callback when failed, could be undefined
  
 
 Key| Description
-
 ---|---
-
 result|the userObject
 
  
@@ -628,23 +605,14 @@ This action will be returned when the session context changed including adding/r
  
 
 Key | Description
-
 ---|---
-
 action.err|true if it were an err response.
-
 action.payload.total|the the total number of the sessions
-
 action.payload.defaultSessionId|the id of the default session
-
 action.payload.sessionContexts|the array of the solace contexts
-
 action.payload.sessionContexts[i].id|the id of the session
-
 action.payload.sessionContexts[i].name|the name of the session
-
 action.payload.sessionContexts[i].subscribedTopics|the topics of the session subscribed
-
 action.payload.sessionContexts[i].createdAt|the js date object of the time the session created
 
  
@@ -657,7 +625,7 @@ The action types dictionary object of solace event.
 
  
 
-for instance `Event.actionsDict[solace.SessionEventCode.MESSAGE].actionType` will be the action of solace MESSAGE EVENT. When solace trigger this event, the middeware will put this action.
+for instance `Event.actionsDict[solace.SessionEventCode.MESSAGE].actionType` will be the action of solace MESSAGE EVENT. When solace trigger this event, the middleware will put this action.
 
  
 
@@ -776,21 +744,13 @@ When they were trigger, a redux will action wil be also sent.
  
 
 Key | Description
-
 ---|---
-
 action.err|true if it were an err response.
-
 action.payload.sessionId|the id of the session receiving the message
-
 action.payload.sessionEvent|the native solace sessionEvent object
-
 action.payload.attachment|the attachment object if middleware succeed interpreting from the sessionEvent or it will be null 
-
 action.payload.userPropertyMap|the flat userPropertyMap object of solace msg 
-
 action.payload.destination|the destination object of solace msg 
-
 action.payload.destination|the destination object of solace msg 
 
  
@@ -848,19 +808,12 @@ Publish a string based msg to a session
  
 
 Parameters | Description
-
 ---|---
-
 sessionId|the id of the session you want to use
-
 topicName|the topic you want to publish
-
 msgText|the string of the message
-
 userDataStr|the optional string of the user data, could be undefined
-
 callback |optional callback when succeed, could be undefined
-
 errorCallback |optional callback when failed, could be undefined
 
  
@@ -904,19 +857,12 @@ errorCallback |optional callback when failed, could be undefined
  
 
 Key | Description
-
 ---|---
-
 action.err|true if it were an err response.
-
 action.payload.sessionId|the id of the session you want to use
-
 action.payload.topicName|the topic you want to publish
-
 action.payload.msgText|the string of the message
-
 action.payload.userDataStr|the userDataStr of solace msg object
-
 action.payload.userPropertyMap|the flat userPropertyMap of solace msg object
 
  
@@ -978,17 +924,11 @@ Subscribe a topic of a session
  
 
 Parameters | Description
-
 ---|---
-
 sessionId|the id of the session you want to use
-
 topicName|the topic you want to subscribe
-
 timeout| optional time out value in milliseconds, could be undefined
-
 callback |optional callback when succeed, could be undefined
-
 errorCallback |optional callback when failed, could be undefined
 
 - Return SUBSCRIBE_ONE_TOPIC_OF_ONE_SESSION_RES
@@ -1018,13 +958,9 @@ errorCallback |optional callback when failed, could be undefined
  
 
 Key | Description
-
 ---|---
-
 action.err|true if it were an err response.
-
 action.payload.sessionId|the id of the session you want to use
-
 action.payload.topicName|the topic you want to subscribe
 
  
@@ -1088,17 +1024,11 @@ Unsubscribe a topic of a session
  
 
 Parameters | Description
-
 ---|---
-
 sessionId|the id of the session you want to use
-
 topicName|the topic you want to unsubscribe
-
 timeout| optional time out value in milliseconds, could be undefined
-
 callback |optional callback when succeed, could be undefined
-
 errorCallback |optional callback when failed, could be undefined
 
 - Return UNSUBSCRIBE_ONE_TOPIC_OF_ONE_SESSION_RES
@@ -1128,13 +1058,9 @@ errorCallback |optional callback when failed, could be undefined
  
 
 Key | Description
-
 ---|---
-
 action.err|true if it were an err response.
-
 action.payload.sessionId|the id of the session you want to use
-
 action.payload.topicName|the topic you want to unsubscribe
 
  
@@ -1260,28 +1186,16 @@ Send one txt request msg of one session
  
 
 Parameters | Description
-
 ---|---
-
 sessionId|the id of the session you want to use
-
 topicName|the topic you want to unsubscribe
-
 msgText|the string of the message
-
 userDataStr|the userData string of the request  solace message
-
 userPropertyMap|the userPropertyMap object for the request solace message
-
 userObject| customized object sent with the response action returned 
-
 timeout| optional time out value in milliseconds, could be undefined
-
 callback |optional callback when succeed, could be undefined
-
-errorCallback |optional callback when failed, could be undefined
-
- 
+errorCallback |optional callback when failed, could be undefined 
 
 - Return SEND_ONE_TXT_MSG_REQUEST_OF_ONE_SESSION_RES
 
@@ -1422,27 +1336,16 @@ errorCallback |optional callback when failed, could be undefined
  
 
 Key | Description
-
 ---|---
-
 action.err|true if it were an err response.
-
 action.payload.sessionId|the id of the session you want to use
-
 action.payload.topicName|the topic you want to unsubscribe
-
 action.payload.msgText|the string of the message
-
 action.payload.userDataStr|the userData string of the request  solace message
-
 action.payload.userPropertyMap|the userPropertyMap object for the request solace message
-
 action.payload.userObject| customized object sent with the response action returned 
-
 action.payload.session| the native solace session on which the msg used
-
 action.payload.message| the native solace reply msg if replied successfully 
-
 action.payload.event| the native solace error event if failed to reply 
 
  
@@ -1500,22 +1403,13 @@ Reply one msg via txt msg of one session
  
 
 Parameters | Description
-
 ---|---
-
 sessionId|the id of the session you want to use
-
 msgText|the string of the message
-
 userDataStr|the userData string of the request  solace message
-
 userPropertyMap|the userPropertyMap object for the request solace message
-
 callback |optional callback when succeed, could be undefined
-
 errorCallback |optional callback when failed, could be undefined
-
- 
 
 - Return REPLY_ONE_MSG_VIA_TXT_OF_ONE_SESSION_RES
 
@@ -1548,19 +1442,12 @@ errorCallback |optional callback when failed, could be undefined
  
 
 Key | Description
-
 ---|---
-
 action.err|true if it were an err response.
-
 action.payload.sessionId|the id of the session you want to use
-
 action.payload.msgText|the string of the message
-
 action.payload.userDataStr|the userData string of the request  solace message 
-
 action.payload.session| the native solace session on which the msg used
-
 action.payload.message| the native solace request msg
 
  
@@ -1614,9 +1501,7 @@ Create a solaceContext object handling sessions publish/subscribe msg and etc
  
 
 Parameters | Description
-
 ---|---
-
 solace|the object imported via `import solace from 'solclientjs/lib-browser/solclient';`
 
  
@@ -1624,9 +1509,7 @@ solace|the object imported via `import solace from 'solclientjs/lib-browser/solc
 #### Properties
 
 - solace
-
 - defaultSessionId
-
 - total
 
  

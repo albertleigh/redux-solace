@@ -4,7 +4,7 @@ import * as solace from 'solclientjs/lib-browser/solclient';
 
 import SolaceContext from './utils/SolaceContext';
 
-declare const window;
+declare const window:any;
 
 export interface IInitState {
     store?:Store<any>,
@@ -13,7 +13,7 @@ export interface IInitState {
 }
 
 export const initState:IInitState = {
-    store:null,
+    store:undefined,
     solace: solace,
     solaceContext: new SolaceContext(solace),
 };

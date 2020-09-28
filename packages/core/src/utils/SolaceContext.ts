@@ -64,7 +64,7 @@ export default class SolaceContext{
 
     total:number = 0;
     sessionContextDict:{[key:string]:SessionContext} = {};
-    defaultSessionId:string = null;
+    defaultSessionId:string = "";
 
     solaceSessionEventCodes:number[];
     messageConsumerEventCodes:string[];
@@ -148,7 +148,7 @@ export default class SolaceContext{
             delete this.sessionContextDict[id];
             if (id == this.defaultSessionId){
                 const sessionIds = Object.keys(this.sessionContextDict);
-                this.defaultSessionId = sessionIds.length>0?sessionIds[0]:null;
+                this.defaultSessionId = sessionIds.length>0?sessionIds[0]:"";
             }
             this.total--;
             return 1;
@@ -195,14 +195,14 @@ export default class SolaceContext{
             if (self.sessionContextDict[sessionId].eventHooks[eventCode]){
                 self.sessionContextDict[sessionId].eventHooks[eventCode].forEach(
                     (oneFun)=>{
-                        oneFun.apply(null,iArguments);
+                        oneFun.apply(null,iArguments as any);
                     }
                 )
             }
         }
     }
 
-    createAndConnectSession = (hosturl:string,username:string,pass:string,vpn:string,sessionCache:string,eventHooks:ISessionContextEventHooks={},config:ISessionContextConfig={}):SessionContext=>{
+    createAndConnectSession = (hosturl:string,username:string,pass:string,vpn:string,sessionCache:string,eventHooks:ISessionContextEventHooks={},config:ISessionContextConfig={}):SessionContext | undefined=>{
         let oneSession;
         let sessionProperty;
 
@@ -217,12 +217,12 @@ export default class SolaceContext{
             hosturl.lastIndexOf("https://")!==0
         ){
             console.error('SolaceContext::createAndConnectSession Invalid protocol - please user one of ws://, wss://, http:// or https:// in host url', hosturl);
-            return null;
+            return undefined;
         }
 
         if (!hosturl || !username || !vpn){
             console.error('SolaceContext::createAndConnectSession Cannot connect: please specify all the Solace msg router properties', hosturl, username, vpn);
-            return null;
+            return undefined;
         }
 
         console.log('[redux-solace] connecting to solace msg router using url: ', hosturl);
@@ -488,7 +488,7 @@ export default class SolaceContext{
     // request & reply
 
     sendTxtMsgReqOfOneSession = (
-        sessionId:string, topicName:string, msgTxt:string, userDataStr:string, userPropertyMap:any,
+        sessionId:string, topicName:string, msgTxt:string, userDataStr:string | undefined, userPropertyMap:any,
         replyReceivedCb:(session:any,message:any)=>void,replyFailedCb:(session:any,e:Error)=>void,
         userObj:any = {}, deliverToOne:Boolean = true, timeout:number = 5000
     ) =>{

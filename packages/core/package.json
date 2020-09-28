@@ -1,0 +1,48 @@
+{
+  "name": "redux-solace",
+  "version": "0.0.0",
+  "description": "solace redux middleware wrapper",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rimraf build dist",
+    "build:dev": "tsc -p ./tsconfig.json",
+    "build:esm": "tsc -p ./tsconfig.prod.json",
+    "build:cjs": "webpack --config webpack.config.js",
+    "build": "npm run clean && npm run build:cjs && npm run build:esm",
+    "build:copy-files": "node ./scripts/copy-files.js",
+    "test": "node scripts/test/js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:albertleigh/redux-solace.git"
+  },
+  "keywords": [
+    "redux",
+    "solace",
+    "albert"
+  ],
+  "author": "Wentao Li <liwentao90@yahoo.com>",
+  "license": "MIT",
+  "dependencies": {
+    "redux": "^4.0.5",
+    "redux-actions": "^2.6.5",
+    "solclientjs": "=10.2.1",
+    "uuid": "^3.4.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.14",
+    "@types/node": "^12.12.62",
+    "@types/redux-actions": "^2.6.1",
+    "fs-extra": "^9.0.1",
+    "jest": "^26.4.2",
+    "jest-environment-jsdom": "^26.3.0",
+    "jest-environment-jsdom-global": "^2.0.4",
+    "redux-mock-store": "^1.5.4",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^26.4.0",
+    "ts-loader": "^8.0.4",
+    "typescript": "^4.0.3",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12"
+  }
+}

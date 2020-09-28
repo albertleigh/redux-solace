@@ -3,7 +3,7 @@ import { initState } from '../init';
 export interface IMsgBuilt {
     sessionEvent:any,
     attachment:any,
-    destination:{
+    destination?:{
         type:string,
         name:string,
     },
@@ -44,10 +44,10 @@ export function doBuildFromSdtMap(sdtMapContainer):any{
 export default (sessionEvent:any):IMsgBuilt=>{
     let attachment;
 
-    const destination = sessionEvent.getDestination()?{
+    const destination = !!sessionEvent.getDestination()?{
         type: sessionEvent.getDestination().getType(),
         name: sessionEvent.getDestination().getName(),
-    }:null;
+    }:undefined;
     const userDataStr = sessionEvent.getUserData()?sessionEvent.getUserData():null;
     const userPropertyMap={};
 

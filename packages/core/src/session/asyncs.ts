@@ -21,7 +21,7 @@ export async function createAndConnectSession(action:Action<types.ICreateAndConn
         hostUrl, vpn, username, sessionCache, pass, config
     } = action.payload;
 
-    let newSessionContext:SessionContext = null;
+    let newSessionContext:SessionContext| undefined;
     try{
         newSessionContext = initState.solaceContext.createAndConnectSession(
             hostUrl,username,pass, vpn, sessionCache, {}, config

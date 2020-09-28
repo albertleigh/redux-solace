@@ -1,0 +1,27 @@
+
+{
+  "version": "0.0.0",
+  "packages": [
+    "packages/*",
+    "examples/*"
+  ],
+  "npmClient": "npm",
+  "command": {
+    "publish": {
+      "ignoreChanges": [
+        "ignored-file",
+        "*.md"
+      ],
+      "message": "chore(release): publish %s"
+    },
+    "bootstrap": {},
+    "version": {
+      "allowBranch": [
+        "develop",
+        "release/*",
+        "feature/*",
+        "*/*"
+      ]
+    }
+  }
+}

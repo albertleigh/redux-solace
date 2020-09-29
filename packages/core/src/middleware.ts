@@ -1,4 +1,4 @@
-import {Store, Action } from 'redux';
+import {Store, Action, Middleware } from 'redux';
 import { ActionHandlerParams } from './GlobalTypes';
 
 // session
@@ -70,9 +70,9 @@ const actionHandlers = {
     [REPLY_ONE_MSG_VIA_TXT_OF_ONE_SESSION]:replyOneMsgViaTxtOfOneSessionHanlder,
 };
 
-export default () => {
+export default ():Middleware => {
 
-    return (store?:Store<any>)=>{
+    return ((store?:Store)=>{
 
         init(store);
 
@@ -91,6 +91,6 @@ export default () => {
             }
         }
 
-    };
+    }) as any;
 
 }

@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {getContext} from 'redux-anno';
 import clsx from 'clsx';
 import {makeStyles, useTheme, Theme, createStyles} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -15,8 +16,12 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 
+import {Entry as EntryModel} from 'src/stores/Entry'
 import {mainViewOptions} from 'src/stores/MainViews/MainViewManager';
+import {useSelector} from "react-redux";
 
 const drawerWidth = 240;
 
@@ -80,6 +85,14 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const MainEntry = React.memo((props) => {
+
+  const defaultCtx = getContext();
+  const entryInst = defaultCtx.getOneInstance(EntryModel);
+
+  const snackBarOpen = useSelector(()=>entryInst.snackBarOpen.value);
+  const snackBarMsg = useSelector(()=>entryInst.snackBarMsg.value);
+  const snackBarColor = useSelector(()=>entryInst.snackBarColor.value);
+
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
@@ -113,7 +126,7 @@ export const MainEntry = React.memo((props) => {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap>
-              Redux Anno React example
+              Redux Solace Demo
             </Typography>
           </Toolbar>
         </AppBar>
@@ -158,6 +171,11 @@ export const MainEntry = React.memo((props) => {
           <div className={classes.drawerHeader} />
           {children}
         </main>
+        <Snackbar open={snackBarOpen} autoHideDuration={6000} onClose={entryInst.closeSnackBar.dispatch}>
+          <MuiAlert elevation={6} variant="filled"
+                    onClose={entryInst.closeSnackBar.dispatch} severity={snackBarColor}
+          >{snackBarMsg}</MuiAlert>
+        </Snackbar>
       </div>
     </>
   );

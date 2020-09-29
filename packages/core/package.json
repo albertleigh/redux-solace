@@ -2,7 +2,9 @@
   "name": "redux-solace",
   "version": "0.0.0",
   "description": "solace redux middleware wrapper",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "module": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "clean": "rimraf build dist",
     "build:dev": "tsc -p ./tsconfig.json",

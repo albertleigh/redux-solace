@@ -1,5 +1,7 @@
 import React from 'react';
 import {Provider} from 'react-redux';
+import { hot } from 'react-hot-loader/root';
+
 import AnnoStore from 'src/stores';
 import MainEntry from 'src/layouts/MainEntry';
 import MainView from 'src/views/main';
@@ -20,4 +22,4 @@ function App() {
   );
 }
 
-export default App;
+export default hot(App);

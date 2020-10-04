@@ -1,3 +1,5 @@
+import {IMsgBuilt} from '../utils/msgBuilder'
+
 export interface IEventActionDict {
     [key:string]:{
         actionType:string,
@@ -7,4 +9,9 @@ export interface IEventActionDict {
         actionType:string,
         action:(options:any)=>any
     },
+}
+
+export interface ISolaceMessagePayload extends IMsgBuilt{
+    sessionId: string;
+    sessionName: string;
 }

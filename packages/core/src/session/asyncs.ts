@@ -39,6 +39,7 @@ export async function createAndConnectSession(action:Action<types.ICreateAndConn
 
     if(newSessionContext){
         const sessionId = newSessionContext.id;
+        const sessionName = newSessionContext.name;
         const solaceSessionEventDict = SolaceEvents.actionsDict;
         const responseAction = handlerActions.createAndConnectSessionRes({result:newSessionContext});
         Object.keys(solaceSessionEventDict).forEach(oneEvtCode => {
@@ -46,7 +47,7 @@ export async function createAndConnectSession(action:Action<types.ICreateAndConn
                 initState.solaceContext.addOneToEventHookOfOneSession(sessionId,oneEvtCode,(sessionEvent)=>{
                     const msgBuilt:IMsgBuilt = msgBuilder(sessionEvent);
                     dispatchAction(solaceSessionEventDict[oneEvtCode].action({
-                        sessionId, ...msgBuilt,
+                        sessionId, sessionName, ...msgBuilt,
                     }));
                 })
 

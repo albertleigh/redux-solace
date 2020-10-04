@@ -1,11 +1,10 @@
 import {Action} from 'redux-actions';
 
 import { initState, dispatchAction } from '../init';
-import { SessionContext } from '../utils/SolaceContext';
-import msgBuilder, {IMsgBuilt} from '../utils/msgBuilder';
 
 import * as types from "./types";
 import * as handlerActions from './handlerActions';
+import {solaceContextChanged} from '../session/handlerActions'
 
 const PUBLISH_ONE_TXT_MSG_TO_ONE_SESSION_ERR_MSG='[redux-solace] Failed to publish the txt msg to a session';
 const SUBSCRIBE_ONE_TOPIC_OF_ONE_SESSION_ERR_MSG='[redux-solace] Failed to subscribe one topic of one solace session';
@@ -62,6 +61,8 @@ export async function subscribeOneTopicOfOneSession(action:Action<types.ISubscri
             error:e,
         }));
         throw  e;
+    }finally {
+        dispatchAction(solaceContextChanged(initState.solaceContext.getContextPayload()))
     }
 }
 
@@ -88,5 +89,7 @@ export async function unsubscribeOneTopicOfOneSession(action:Action<types.IUnsub
             error:e,
         }));
         throw  e;
+    }finally {
+        dispatchAction(solaceContextChanged(initState.solaceContext.getContextPayload()))
     }
 }
